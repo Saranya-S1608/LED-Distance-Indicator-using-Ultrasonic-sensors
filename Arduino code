@@ -1,0 +1,34 @@
+#define TRIG_PIN 10
+#define ECHO_PIN 11
+#define GREEN_LED_PIN 2
+#define RED_LED_PIN 3
+#define DISTANCE_THRESHOLD 30  // distance threshold in centimeters
+
+void setup() {
+  pinMode(ECHO_PIN, INPUT);
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(RED_LED_PIN, OUTPUT);
+  pinMode(GREEN_LED_PIN, OUTPUT);
+}
+
+void loop() {
+  long duration, distance;
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  duration = pulseIn(ECHO_PIN, HIGH);
+  distance = (duration / 2) / 29.1;  // converting time to distance
+
+  if (distance <= DISTANCE_THRESHOLD) {
+    digitalWrite(RED_LED_PIN, HIGH);
+    digitalWrite(GREEN_LED_PIN, LOW);
+  } else {
+    digitalWrite(RED_LED_PIN, LOW);
+    digitalWrite(GREEN_LED_PIN, HIGH);
+  }
+
+  delay(100);  // simple debounce delay
+}
